@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<meta charset="UTF-8">
+<head th:insert = "~{index :: head}"></head>
+<body>
+    
+    
+    <nav th:insert = "~{index :: navbar}"></nav>
+
+    <!-- Form per registrazione -->
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <h2 class="text-center">Registrati</h2>
+            </div>
+            <div th:if = "${param.success}">
+                <div class="alert alert-info">
+                    Ti sei registrato con successo alla nostra app!
+                </div>
+            </div>
+            <div class="col-12 col-md-8">
+                <form method="POST" role="form" th:action= "@{/register/save}" th:object="user">
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Inserisci il tuo nome" th:field = "*{name}" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Cognome</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Inserisci il tuo cognome" th:field = "*{surname}" name="surname">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Inserisci la tua email" th:field = "*{email}" name="email">
+                        <p th:errors ="*{email}" class="text-danger" th:if = "${#fields.hasError('email')}"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <p th:errors = "*{password}" class="text-danger" th:if = "${fields.hasError('password')}"></p>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Registrati</button>
+                        <p>Hai già un account? <a th:href="@{/login}">Accedi</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+    <head th:insert = "~{index :: footer}"></head>
+    
+    <script th:replace = "~{index :: bootstrapScript}"></script>
+</body>
+</html>

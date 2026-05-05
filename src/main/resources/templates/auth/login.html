@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{index :: head}"></head>
+
+<body>
+    
+    <nav th:insert="~{index :: navbar}"></nav>
+    
+    <!-- Form per accesso -->
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <h2>Accedi al tuo profilo</h2>
+            </div>
+            <div class="col-12 col-md-8">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">Email o password errata.</div>
+                </div>
+                <div th:if="${param.logout}">
+                    <div class="alert alert-success">Hai effettuato il logout.</div>
+                </div>
+                <!-- Form vero e proprio -->
+                <form method="post" th:action="@{/login}" role="form">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Inserisci username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Inserisci password" name="password">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <p>Non sei ancora registrato? <a th:href="@{/register}">Registrati</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <head th:insert="~{index :: footer}"></head>
+    
+    <script th:replace="~{index :: bootstrapScript}"></script>
+    
+</body>
+</html>

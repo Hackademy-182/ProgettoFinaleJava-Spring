@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:insert="~(index :: navbar)"></head>
+
+<head>
+    <head th:insert="~{index :: head}"></head>
+</head>
 
 <body>
 
-    <head th:insert = "~(index :: navbar)"></head>
+    <div th:insert="~{index :: navbar}"></div>
 
-    <h1>The Aulab Cronichle</h1>
+    <h1>The Aulab Chronicle</h1>
 
+    <div th:insert="~{index :: footer}"></div>
 
-    <head th:insert = "~(index :: footer)"></head>
+    <div th:insert="~{index :: bootstrapScript}"></div>
 
-    <head th:insert = "~(index :: bootstrapScript)"></head>
-    
 </body>
 </html>
