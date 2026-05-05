@@ -30,12 +30,13 @@
                             Area personale
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Registrati</a></li>
-                            <li><a class="dropdown-item" href="#">Accedi</a></li>
+                            <li sec:authorize="isAnonymous"><a class="dropdown-item" th:href="@{/register}">Registrati</a></li>
+                            <li sec:authorize="isAnonymous"><a class="dropdown-item" th:href="@{/login}">Accedi</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
                         </ul>
                     </li>
+                    <div sec:authorize="isAuthenticated" class="d-flex align-items-center">Benvenuto <div class="px-2" sec:authentication="name"></div></div>
                     <li class="nav-item">
                         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                     </li>

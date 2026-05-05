@@ -11,6 +11,10 @@
 
     <h1>The Aulab Chronicle</h1>
 
+    <div th:if="${param.notAuthorized}">
+        <div class="alert alert-danger">Accesso non autorizzato.</div>
+    </div>
+
     <div th:insert="~{index :: footer}"></div>
 
     <div th:insert="~{index :: bootstrapScript}"></div>
