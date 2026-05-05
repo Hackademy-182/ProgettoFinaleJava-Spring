@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-8">
-                <form method="POST" role="form" th:action= "@{/register/save}" th:object="user">
+                <form method="POST" role="form" th:action= "@{/register/save}" th:object="${user}">
                     <div class="mb-3">
                         <label for="formGroupExampleInput" class="form-label">Nome</label>
                         <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Inserisci il tuo nome" th:field = "*{name}" name="name">
@@ -32,12 +32,12 @@
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email</label>
                         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Inserisci la tua email" th:field = "*{email}" name="email">
-                        <p th:errors ="*{email}" class="text-danger" th:if = "${#fields.hasError('email')}"></p>
+                        <p th:errors ="*{email}" class="text-danger" th:if = "${#fields.hasErrors('email')}"></p>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
-                        <p th:errors = "*{password}" class="text-danger" th:if = "${fields.hasError('password')}"></p>
+                        <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{password}">
+                        <p th:errors = "*{password}" class="text-danger" th:if = "${#fields.hasErrors('password')}"></p>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">Registrati</button>
