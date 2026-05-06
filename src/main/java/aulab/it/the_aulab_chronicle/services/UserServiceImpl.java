@@ -3,12 +3,10 @@ package aulab.it.the_aulab_chronicle.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,7 +18,6 @@ import aulab.it.the_aulab_chronicle.repositories.RoleRepository;
 import aulab.it.the_aulab_chronicle.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,13 +34,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     public void saveUser(UserDTO userdto, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
         User user = new User();
@@ -56,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        authenticateUserAndSetSession(user, userdto, request);
+        authenticateUserAndSetSession(user, request);
     }
 
     @Override
@@ -64,21 +54,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    private void authenticateUserAndSetSession(User user, UserDTO userdto, HttpServletRequest request) {
-        try {CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
-        
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userdto.getPassword());
+    private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
 
-            Authentication authentication = authenticationManager.authenticate(authToken);
+    UserDetails userDetails =
+            customUserDetailsService.loadUserByUsername(user.getEmail());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+    Authentication authentication =
+            new UsernamePasswordAuthenticationToken(userDetails,null,
+                                                    userDetails.getAuthorities());
 
-            HttpSession session = request.getSession(true);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-        } catch (AuthenticationException e){
-            e.printStackTrace();
-        }
-    }
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    request.getSession(true)
+            .setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+}
 
     
 

@@ -11,8 +11,16 @@
 
     <h1>The Aulab Chronicle</h1>
 
+<!-- Messaggio accesso non autorizzato -->
+
     <div th:if="${param.notAuthorized}">
         <div class="alert alert-danger">Accesso non autorizzato.</div>
+    </div>
+
+<!-- Messaggio avvenuta registrazione -->
+
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
     </div>
 
     <div th:insert="~{index :: footer}"></div>

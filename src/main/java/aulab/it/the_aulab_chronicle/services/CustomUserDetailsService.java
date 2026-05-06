@@ -1,6 +1,5 @@
 package aulab.it.the_aulab_chronicle.services;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -38,16 +37,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-    public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        Collection <? extends GrantedAuthority> mapRoles = null;
-        if (roles.size() != 0) {
-            mapRoles = roles.stream().map(role->new SimpleGrantedAuthority(role.getName()))
-                            .collect(Collectors.toList());
-        }else{
-            mapRoles = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return mapRoles;
-    }
+    public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+    return roles.stream()
+            .map(role -> new SimpleGrantedAuthority(role.getName()))
+            .collect(Collectors.toList());
+}
 
 
 }
