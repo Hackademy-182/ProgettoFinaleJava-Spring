@@ -32,6 +32,7 @@
                         <ul class="dropdown-menu">
                             <li sec:authorize="isAnonymous"><a class="dropdown-item" th:href="@{/register}">Registrati</a></li>
                             <li sec:authorize="isAnonymous"><a class="dropdown-item" th:href="@{/login}">Accedi</a></li>
+                            <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/articles/create}">Inserisci articolo</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
                         </ul>
