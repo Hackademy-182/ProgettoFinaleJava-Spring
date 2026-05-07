@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{index :: head}"></head>
+<body>
+
+    <nav th:insert="~{index :: navbar}"></nav>
+
+    <h1 th:text="${article.title}" class="text-center p-2"></h1>
+    <h2 th:text="${article.subtitle}" class="text-center p-2"></h2>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <img th:if="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="${article.image.path}" alt="Foto dell'articolo" class="img-fluid">
+                <img th:unless="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="@{/images/default.png}" alt="Immagine di default" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-6 p-2">
+                <div class="p-2">
+                    <p th:text="${article.user.username}"></p>
+                </div>
+                <div class="p-2">
+                    <p th:text="${article.category.name}">Categoria: </p>
+                </div>
+                <div class="p-2">
+                    <p th:text="${article.publishDate}">Pubblicato il: </p>
+                </div>
+            </div>
+            <div class="col-12">
+                <p th:text="${article.body}" class="p-2"></p>
+            </div>
+            <div class="col-5">
+                <a href="#" class="btn btn-primary p" onclick="goBack()">Torna indietro agli articoli</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <head th:insert="~{index :: footer}"></head>
+    
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+    <script> function goBack(){
+        window.history.back();
+    }
+    </script>
+</body>
+</html>

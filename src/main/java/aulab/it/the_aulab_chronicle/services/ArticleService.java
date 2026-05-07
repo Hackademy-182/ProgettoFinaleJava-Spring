@@ -1,15 +1,20 @@
 package aulab.it.the_aulab_chronicle.services;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import aulab.it.the_aulab_chronicle.dtos.ArticleDto;
 import aulab.it.the_aulab_chronicle.models.Article;
@@ -24,29 +29,48 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
     private UserRepository userRepository;
 
     @Autowired
-    private ModelMapper modelmapper;
+    private ModelMapper modelMapper;
 
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     @Override
     public List<ArticleDto> readAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        List<ArticleDto> dtos = new ArrayList<ArticleDto>();
+        for (Article article : articleRepository.findAll()) {
+            dtos.add(modelMapper.map(article, ArticleDto.class));
+        }
+        return dtos;
     }
 
     @Override
     public ArticleDto read(Long key) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Optional<Article> optionalArticle = articleRepository.findById(key);
+        if (optionalArticle.isPresent()) {
+            return modelMapper.map(optionalArticle.get(), ArticleDto.class);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Articolo non trovato");
+        }
     }
 
     @Override
     public ArticleDto create(Article article, Principal principal, MultipartFile file) {
+
+        String url = "";
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             User user = (userRepository.findById(userDetails.getId())).get();
             article.setUser(user);
         }
+
+        article.setPublishDate(LocalDate.now());
+
         if (!file.isEmpty()) {
             try {
                 CompletableFuture<String> futureUrl = imageService.saveImageOnCloud(file);
@@ -56,7 +80,7 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
             }
         }
 
-        ArticleDto dto = modelmapper.map(articleRepository.save(article), ArticleDto.class);
+        ArticleDto dto = modelMapper.map(articleRepository.save(article), ArticleDto.class);
         if (!file.isEmpty()) {
             imageService.saveImageOnDB(url, article);
         }

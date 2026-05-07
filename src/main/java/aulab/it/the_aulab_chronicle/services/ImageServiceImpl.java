@@ -1,22 +1,28 @@
 package aulab.it.the_aulab_chronicle.services;
 
+import java.io.IOException;
 import java.util.UUID;
-
-import aulab.it.the_aulab_chronicle.models.Article;
-
 import java.util.concurrent.CompletableFuture;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import aulab.it.the_aulab_chronicle.models.Article;
 import aulab.it.the_aulab_chronicle.models.Image;
+import aulab.it.the_aulab_chronicle.repositories.ImageRepository;
+import aulab.it.the_aulab_chronicle.utils.StringManipulation;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -38,25 +44,28 @@ public class ImageServiceImpl implements ImageService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    void saveImageOnDB(String url, Article article){
+    @Override
+    public void saveImageOnDB(String url, Article article){
         url = url.replace(supabaseBucket, supabaseImage);
         imageRepository.save(Image.builder().path(url).article(article).build());
     }
 
     @Async
-    CompletableFuture<String> saveImageOnnCloud(MultipartFile file) throws Exception{
+    @Override
+    public CompletableFuture<String> saveImageOnCloud(MultipartFile file) throws Exception{
         if (!file.isEmpty()) {
             try {
-                String newFile = UUID.randomUUID().toString() + " " + file.getOriginalFilename();
-                String extention = StringManipulation.getFileExtention(nameFile);
-                String url = supabaseUrl + supabaseBucket + nameFile;
+                String nameFile = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                String extension = StringManipulation.getFileExtension(nameFile);
+                String url = supabaseUrl + supabaseBucket + "/" + nameFile;
 
                 MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
                 body.add("file", file.getBytes());
 
                 HttpHeaders headers = new HttpHeaders();
-                headers.set("Content-type", "/image" + extention);
-                headers.set("Authorization", "Bearer" + supabaseKey);
+                headers.setContentType(MediaType.parseMediaType("image/" + extension));
+                headers.set("Authorization", "Bearer " + supabaseKey);
+                headers.set("apikey", supabaseKey);
 
                 HttpEntity<byte[]> requesEntity = new HttpEntity<>(file.getBytes(), headers);
                 restTemplate.exchange(url, HttpMethod.POST, requesEntity, String.class);
@@ -68,10 +77,28 @@ public class ImageServiceImpl implements ImageService {
         }else{
             throw new IllegalArgumentException("Non hai inserito un'immagine");
         }
-        return CompletableFuture.failedFuture(null);
+        return CompletableFuture.failedFuture(new RuntimeException("Errore nel caricamento dell'immagine"));
     }
 
-    void deleteImage(String imagePath) throws IDException{
+    @Async
+    @Transactional
+    @Override
+    public void deleteImage(String imagePath) throws IOException{
+
+        String url = imagePath.replace(supabaseImage, supabaseBucket);
+
+        imageRepository.deleteByPath(imagePath);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + supabaseKey);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
+
+        System.out.println(response.getBody());
 
     }
 }

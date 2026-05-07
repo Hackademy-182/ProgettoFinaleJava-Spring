@@ -27,8 +27,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(csrf->csrf.disable())
-            .authorizeHttpRequests((authorize)->authorize.requestMatchers("/register", "/register/save")
-            .permitAll().anyRequest().authenticated()).formLogin(form->form.loginPage("/login")
+            .authorizeHttpRequests((authorize)->authorize
+            .requestMatchers("/register**", "/", "/articles", "/images/**", "/articles/detail/**").permitAll()
+            .anyRequest().authenticated())
+            .formLogin(form->form.loginPage("/login")
             .loginProcessingUrl("/login").defaultSuccessUrl("/").permitAll())
             .logout(logout->logout.logoutUrl("/logout").permitAll())
             .exceptionHandling(exception->exception.accessDeniedPage("/error/403"))
