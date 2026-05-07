@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -62,4 +63,9 @@ public class Article {
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties("articles")
     private Category category;
+
+    // Relazione un articolo un'immagine
+    @OneToOne(mappedBy = "article")
+    @JsonIgnoreProperties({"article"})
+    private Image image;
 }
