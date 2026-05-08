@@ -21,6 +21,7 @@ import aulab.it.the_aulab_chronicle.models.Article;
 import aulab.it.the_aulab_chronicle.models.User;
 import aulab.it.the_aulab_chronicle.repositories.ArticleRepository;
 import aulab.it.the_aulab_chronicle.repositories.UserRepository;
+import aulab.it.the_aulab_chronicle.models.Category;
 
 @Service
 public class ArticleService implements CrudService<ArticleDto, Article, Long> {
@@ -95,6 +96,28 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
     @Override
     public void delete(Long key) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    // ricerca per categoria
+
+    public List<ArticleDto> searchByCategory(Category category){
+
+        List<ArticleDto> dtos = new ArrayList<>();
+        for(Article article: articleRepository.findByCategory(category)){
+            dtos.add(modelMapper.map(article, ArticleDto.class));
+        }
+        return dtos;
+    }
+
+    // ricerca per autore
+
+    public List<ArticleDto> searchByAuthor(User user){
+
+        List<ArticleDto> dtos = new ArrayList<>();
+        for (Article article : articleRepository.findByUser(user)) {
+            dtos.add(modelMapper.map(article, ArticleDto.class));
+        }
+        return dtos;
     }
 
 }

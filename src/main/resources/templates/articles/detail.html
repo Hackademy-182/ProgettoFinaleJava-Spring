@@ -19,7 +19,8 @@
                     <p th:text="${article.user.username}"></p>
                 </div>
                 <div class="p-2">
-                    <p th:text="${article.category.name}">Categoria: </p>
+                    <p th:if="${article.category != null}">Categoria: <p th:href="@{/categories/search/{id}(id=${article.category.id})}" th:text="${article.category.name}">Categoria: </p></p>
+                    <p th:if="${article.category == null}">Nessuna categoria</p>
                 </div>
                 <div class="p-2">
                     <p th:text="${article.publishDate}">Pubblicato il: </p>

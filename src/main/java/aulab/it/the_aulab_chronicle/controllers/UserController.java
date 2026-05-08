@@ -1,16 +1,21 @@
 package aulab.it.the_aulab_chronicle.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import aulab.it.the_aulab_chronicle.dtos.ArticleDto;
 import aulab.it.the_aulab_chronicle.dtos.UserDto;
 import aulab.it.the_aulab_chronicle.models.User;
+import aulab.it.the_aulab_chronicle.services.ArticleService;
 import aulab.it.the_aulab_chronicle.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ArticleService articleService;
 
     // Home
 
@@ -64,6 +72,21 @@ public class UserController {
         redirectAttributes.addFlashAttribute("successMessage", "Registrazione avvenuta con successo");
         return "redirect:/";
     } 
+
+    // Rotta ricerca per utente
+
+    @GetMapping("/search/{id}")
+    public String userArticlesSearch(@PathVariable("id") Long id, Model viewModel){
+        User user = userService.find(id);
+        viewModel.addAttribute("title", "Tutti gli articoli dell'utente: " + user.getUsername());
+
+        List<ArticleDto> articles = articleService.searchByAuthor(user);
+        viewModel.addAttribute("articles", articles);
+
+        return "/articles/articles";
+
+
+    }
 
                                 
 }

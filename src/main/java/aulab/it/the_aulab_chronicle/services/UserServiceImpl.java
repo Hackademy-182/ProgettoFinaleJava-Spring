@@ -69,6 +69,11 @@ public class UserServiceImpl implements UserService {
             .setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 }
 
+    @Override
+    public User find(Long id) {
+        return userRepository.findById(id).get();
+    }
+
     
 
 }
