@@ -9,7 +9,7 @@
 
     <div th:insert="~{index :: navbar}"></div>
 
-    <h1>The Aulab Chronicle</h1>
+    <h1 class="text-center">The Aulab Chronicle</h1>
 
 <!-- Messaggio accesso non autorizzato -->
 
@@ -21,6 +21,19 @@
 
     <div th:if="${successMessage}" class="alert alert-success">
         <p th:text="${successMessage}"></p>
+    </div>
+
+<!-- Cards ultimi 4 articoli -->
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-10 p-3">
+                <h2 class="text-center">I nostri ultimi articoli</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center p-2">
+            <div class="col-12 col-md-3 p-2"></div>
+        </div>
     </div>
 
     <div th:insert="~{index :: footer}"></div>

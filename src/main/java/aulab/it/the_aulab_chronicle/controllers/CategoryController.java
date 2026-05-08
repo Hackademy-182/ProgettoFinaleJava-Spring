@@ -17,7 +17,7 @@ import aulab.it.the_aulab_chronicle.services.ArticleService;
 import aulab.it.the_aulab_chronicle.services.CategoryService;
 
 @Controller
-@RequestMapping
+@RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired

@@ -1,5 +1,7 @@
 package aulab.it.the_aulab_chronicle.controllers;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import aulab.it.the_aulab_chronicle.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -33,7 +36,13 @@ public class UserController {
     // Home
 
     @GetMapping("/")
-    public String home(){
+    public String home(Model viewModel){
+
+        List<ArticleDto> articles = articleService.readAll();
+        Collections.sort(articles, Comparator.comparing(ArticleDto::getPublishDate).reversed());
+        List<ArticleDto> lastFourArticles = articles.stream().limit(4)
+                                                    .collect(Collectors.toList());
+        viewModel.addAttribute("articles", lastFourArticles);
         return "home";
     }
 
@@ -75,7 +84,7 @@ public class UserController {
 
     // Rotta ricerca per utente
 
-    @GetMapping("/search/{id}")
+    @GetMapping("/users/search/{id}")
     public String userArticlesSearch(@PathVariable("id") Long id, Model viewModel){
         User user = userService.find(id);
         viewModel.addAttribute("title", "Tutti gli articoli dell'utente: " + user.getUsername());

@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:insert="~{index :: head}"></head>
 <body>
-
+    
     <nav th:insert="~{index :: navbar}"></nav>
-
+    
     <h1 th:text="${article.title}" class="text-center p-2"></h1>
     <h2 th:text="${article.subtitle}" class="text-center p-2"></h2>
-
+    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-6">
@@ -16,11 +16,24 @@
             </div>
             <div class="col-12 col-md-6 p-2">
                 <div class="p-2">
-                    <p th:text="${article.user.username}"></p>
+                    <a th:href="@{/users/search/{id}(id=${article.user.id})}" class="text-decoration-none">
+                        <div>
+                            Autore: <span th:text="${article.user.username}"></span>
+                        </div>
+                    </a>
                 </div>
                 <div class="p-2">
-                    <p th:if="${article.category != null}">Categoria: <p th:href="@{/categories/search/{id}(id=${article.category.id})}" th:text="${article.category.name}">Categoria: </p></p>
-                    <p th:if="${article.category == null}">Nessuna categoria</p>
+                    <p th:if="${article.category != null}">
+                        <a th:href="@{/categories/search/{id}(id=${article.category.id})}" class="text-decoration-none">
+                            <div>
+                                Categoria: <span th:text="${article.category.name}"></span>
+                            </div>
+                        </a>
+                    </p>
+                    
+                    <p th:if="${article.category == null}">
+                        Nessuna categoria
+                    </p>
                 </div>
                 <div class="p-2">
                     <p th:text="${article.publishDate}">Pubblicato il: </p>
@@ -34,16 +47,16 @@
             </div>
         </div>
     </div>
-
-
-
+    
+    
+    
     <head th:insert="~{index :: footer}"></head>
     
     <script th:replace="~{index :: bootstrapScript}"></script>
-
+    
     <script> function goBack(){
         window.history.back();
     }
-    </script>
+</script>
 </body>
 </html>
