@@ -32,7 +32,18 @@
             </div>
         </div>
         <div class="row justify-content-center p-2">
-            <div class="col-12 col-md-3 p-2"></div>
+            <div th:each="article:${articles}" class="col-12 col-md-3 p-2">
+                <div class="card">
+                    <img th:if="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="${article.image.path}" class="card-img-top" alt="Foto dell'articolo">
+                    <img th:unless="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="@{/images/default.png}" alt="Immagine di default">
+                    <div class="card-body">
+                        <h5 th:text="${article.title}" class="card-title"></h5>
+                        <p th:text="${article.subtitle}" class="card-text"></p>
+                        <p th:text="${article.user.username}"></p>
+                        <a th:href="@{/articles/detail/{id}(id=${article.id})}" class="btn btn-primary">Leggi articolo</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
