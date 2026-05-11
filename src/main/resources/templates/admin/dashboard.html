@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{index :: head}"></head>
+<body>
+
+    <nav th:insert="~{index :: navbar}"></nav>
+
+    <h1 class="text-center">Dashboard dell'amministratore</h1>
+    <h2 class="text-center">Richieste di collaborazione ricevute</h2>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <table class="table table-striped table-responsive-lg">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Utente</th>
+                            <th>Per il tuolo</th>
+                            <th>#Actions</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="request : ${requests}">
+                            <td th:text="${request.id}"></td>
+                            <td th:text="${request.user.username}"></td>
+                            <td th:text="${request.role.name}"></td>
+                            <td>
+                                <a th:href="@{/operations/career/request/detail/{id}(id=${request.id})}" class="btn btn-primary p-2">
+                                    <i class="fa-solid fa-bars">Visualizza</i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <head th:insert="~{index :: footer}"></head>
+
+    <script th:replace="~{index :: bootstrapScript}"></script>
+    
+</body>
+</html>

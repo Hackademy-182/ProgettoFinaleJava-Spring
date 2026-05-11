@@ -23,6 +23,12 @@
         <p th:text="${successMessage}"></p>
     </div>
 
+<!-- Error message ruolo già ottenuto -->
+
+    <div th:if="${errorMessage}" class="alert alert-success">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
 <!-- Cards ultimi 4 articoli -->
 
     <div class="container">

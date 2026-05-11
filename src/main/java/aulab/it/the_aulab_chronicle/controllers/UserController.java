@@ -3,6 +3,7 @@ package aulab.it.the_aulab_chronicle.controllers;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import aulab.it.the_aulab_chronicle.dtos.ArticleDto;
 import aulab.it.the_aulab_chronicle.dtos.UserDto;
 import aulab.it.the_aulab_chronicle.models.User;
+import aulab.it.the_aulab_chronicle.repositories.CareerRequestRepository;
 import aulab.it.the_aulab_chronicle.services.ArticleService;
+import aulab.it.the_aulab_chronicle.services.CategoryService;
 import aulab.it.the_aulab_chronicle.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -32,6 +34,12 @@ public class UserController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private CareerRequestRepository careerRequestRepository;
+
+    @Autowired
+    private CategoryService categoryService;
 
     // Home
 
@@ -93,9 +101,18 @@ public class UserController {
         viewModel.addAttribute("articles", articles);
 
         return "/articles/articles";
-
-
     }
 
+    // Rotta dashboard admin
+
+    @GetMapping("/admin/dashboard")
+    public String adminDashboard(Model viewModel){
+        viewModel.addAttribute("title", "Richieste ricevute");
+        viewModel.addAttribute("requests", careerRequestRepository.findByIsCheckedFalse());
+        viewModel.addAttribute("categories", categoryService.readAll());
+
+        return "admin/dashboard";
+    }
+    
                                 
 }

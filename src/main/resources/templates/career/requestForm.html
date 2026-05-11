@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{index :: head}"></head>
+<body>
+
+    <nav th:insert="~{index :: navbar}"></nav>
+
+    <h1 class="text-center">Inserisci richiesta</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <form th:action="@{/operations/career/request/save}" method="post" th:object="${careerRequest}" enctype="multipart/form-data">
+                    <div class="p-2">
+                        <label for="body" class="form-label">Motivo della richiesta: </label>
+                        <textarea th:field="*{body}" id="body" class="form-control" placeholder="Inserisci motivazione"></textarea>
+                    </div>
+                    <div class="p-2">
+                        <label for="*{role}" class="form-label">Per quale ruolo?</label>
+                        <select th:field="*{role}" id="role" class="form-select">
+                            <option th:each="role:${roles}" th:value="${role.id}" th:text="${#strings.substring(role.name, 5)}"></option>
+                        </select>
+                    </div>
+                    <div class="p-2">
+                        <button type="submit" class="btn btn-primary">Invia richiesta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer th:insert="~{index :: footer}"></footer>
+
+    <script th:replace="~{index :: bootstrapScript}"></script>
+    
+</body>
+</html>
