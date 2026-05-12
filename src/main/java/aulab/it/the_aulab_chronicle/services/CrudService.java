@@ -11,7 +11,7 @@ public interface CrudService<ReadDto, Model, Key> {
     List<ReadDto> readAll();
     ReadDto read(Key key);
     ReadDto create(Model model, Principal principal, MultipartFile file);
-    ReadDto update(Model model, Principal principal, MultipartFile file);
+    ReadDto update(Long id, Model model, Principal principal);
     void delete(Key key);
     
 }

@@ -80,6 +80,7 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
                e.printStackTrace();
             }
         }
+        article.setIsAccepted(null);
 
         ArticleDto dto = modelMapper.map(articleRepository.save(article), ArticleDto.class);
         if (!file.isEmpty()) {
@@ -89,9 +90,11 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
     }
 
     @Override
-    public ArticleDto update(Article model, Principal principal, MultipartFile file) {
+    public ArticleDto update(Long id, Article model, Principal principal) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+
 
     @Override
     public void delete(Long key) {
@@ -119,5 +122,13 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
         }
         return dtos;
     }
+
+    public void setIsAccepted(Boolean result, Long id){
+
+        Article article = articleRepository.findById(id).get();
+        article.setIsAccepted(result);
+        articleRepository.save(article);
+    }
+    
 
 }

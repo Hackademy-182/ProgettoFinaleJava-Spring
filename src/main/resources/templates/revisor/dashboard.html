@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{index :: head}"></head>
+<body>
+
+    <nav th:insert="~{index :: navbar}"></nav>
+
+    <h1 class="text-center pt-2">Dashboard del revisore</h1>
+
+    <h2 class="text-center pt-2">Articoli da revisionare</h2>
+
+    <div th:if="${resultMessage}" class="alert alert-success">
+        <p th:text="${resultMessage}"></p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Titolo</th>
+                            <th>Sottotitolo</th>
+                            <th>Categoria</th>
+                            <th>#Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="article : ${articles}">
+                            <td th:text="${article.id}"></td>
+                            <td th:text="${article.title}"></td>
+                            <td th:text="${article.subtitle}"></td>
+                            <td th:if="${article.category}" th:text="${article.category.name}"></td>
+                            <td th:unless="${article.category}">Nessuna categoria</td>
+                            <td>
+                                <a th:href="@{/articles/revisor/detail/{id}(id=${article.id})}" class="btn btn-primary">Revisiona</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer th:insert="~{index :: footer}"></footer>
+
+    <script th:replace="~{index :: bootstrapScript}"></script>
+    
+</body>
+</html>

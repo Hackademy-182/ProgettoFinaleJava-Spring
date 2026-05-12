@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:insert="~{index :: head}"></head>
 <body>
-
+    
     <nav th:insert="~{index :: navbar}"></nav>
-
+    
     <h1 class="text-center">Dashboard dell'amministratore</h1>
     <h2 class="text-center">Richieste di collaborazione ricevute</h2>
-
+    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -36,11 +36,46 @@
             </div>
         </div>
     </div>
-
-
-
+    
+    <h2 class="text-center">Tutte le categorie</h2>
+    
+    <div th:if="${successMessage}" class="alert alert-success text-center">
+        <span th:text="${successMessage}"></span>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <table class="table table-striped table-responsive-lg">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nome</th>
+                            <th class="text-end">#Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="category : ${categories}">
+                            <td th:text="${category.id}"></td>
+                            <td th:text="${category.name}"></td>
+                            <td class="text-end">
+                                <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn btn-warning">Modifica</a>
+                                <a th:href="@{/categories/delete/{id}(id=${category.id})}" class="btn btn-danger">Elimina</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <div>
+                        <a th:href="@{/categories/create}" class="btn btn-primary">Aggiungi categoria</a>
+                    </div>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    
+    
     <head th:insert="~{index :: footer}"></head>
-
+    
     <script th:replace="~{index :: bootstrapScript}"></script>
     
 </body>

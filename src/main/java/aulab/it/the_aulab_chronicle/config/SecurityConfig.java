@@ -28,8 +28,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(csrf->csrf.disable())
             .authorizeHttpRequests((authorize)->authorize
-            .requestMatchers("/admin/dashboard").hasRole("ADMIN")
-            .requestMatchers("/register**", "/login", "/", "/articles", "/images/**", "/articles/detail/**", "/categories/search/{id}", "/search/{id}").permitAll()
+            .requestMatchers("/admin/dashboard", "/categories/create",
+                "/categories/edit/{id}", "/categories/update/{id}", "/categories/delete/{id}")
+                                .hasRole("ADMIN")
+            .requestMatchers("/revisor/dashboard", "/revisor/detail/{id}", "/accept")
+                                .hasRole("REVISOR")
+            .requestMatchers("/register**", "/login", "/**", "/articles", "/images/**",
+                            "/articles/detail/**", "/categories/search/{id}", "/search/{id}").permitAll()
             .anyRequest().authenticated())
             .formLogin(form->form.loginPage("/login")
             .loginProcessingUrl("/login").defaultSuccessUrl("/").permitAll())
@@ -37,7 +42,7 @@ public class SecurityConfig {
             .exceptionHandling(exception->exception.accessDeniedPage("/error/403"))
             .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                                                .maximumSessions(1)
-                                               .expiredUrl("/login?session-expired-true"));
+                                               .expiredUrl("/login?session-expired=true"));
             return http.build();
     }
 
