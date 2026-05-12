@@ -21,32 +21,48 @@ public class NotificationInterceptor implements HandlerInterceptor {
     @Autowired
     private ArticleRepository articleRepository;
 
-    @Override
-    public void postHandle(HttpServletRequest request,
-                           HttpServletResponse response,
-                           Object handler,
-                           ModelAndView modelAndView) {
+   @Override
+public void postHandle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       Object handler,
+                       ModelAndView modelAndView) {
 
-        if (modelAndView == null) return;
+    System.out.println(">>> INTERCEPTOR ATTIVO");
+    System.out.println("URI = " + request.getRequestURI());
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth == null || auth.getAuthorities() == null) return;
-
-        boolean isAdmin = auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        boolean isRevisor = auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_REVISOR"));
-
-        if (isAdmin) {
-            int careerCount = careerRequestRepository.findByIsCheckedFalse().size();
-            modelAndView.addObject("careerRequests", careerCount);
-        }
-
-        if (isRevisor) {
-            int revisedCount = articleRepository.findByIsAcceptedFalse().size();
-            modelAndView.addObject("articlesToBeRevised", revisedCount);
-        }
+    if (modelAndView == null) {
+        System.out.println(">>> MODELANDVIEW NULL");
+        return;
     }
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    System.out.println(">>> RUOLI UTENTE:");
+    auth.getAuthorities().forEach(a ->
+            System.out.println("AUTH: " + a.getAuthority())
+    );
+
+    boolean isRevisor = auth.getAuthorities().stream()
+            .anyMatch(a -> a.getAuthority().equalsIgnoreCase("ROLE_REVISOR"));
+
+    boolean isAdmin = auth.getAuthorities().stream()
+            .anyMatch(a -> a.getAuthority().equalsIgnoreCase("ROLE_ADMIN"));
+
+    System.out.println(">>> isRevisor = " + isRevisor);
+    System.out.println(">>> isAdmin = " + isAdmin);
+
+    if (isAdmin) {
+        int careerCount = careerRequestRepository.findByIsCheckedFalse().size();
+        System.out.println(">>> CAREER REQUESTS = " + careerCount);
+
+        modelAndView.addObject("careerRequests", careerCount);
+    }
+
+    if (isRevisor) {
+        int revisedCount = articleRepository.findByIsAcceptedNull().size();
+        System.out.println(">>> ARTICLES TO REVIEW = " + revisedCount);
+
+        modelAndView.addObject("articlesToBeRevised", revisedCount);
+    }
+}
 }

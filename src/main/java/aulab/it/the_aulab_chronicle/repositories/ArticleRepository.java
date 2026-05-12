@@ -2,6 +2,7 @@ package aulab.it.the_aulab_chronicle.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
 import aulab.it.the_aulab_chronicle.models.Article;
@@ -15,4 +16,7 @@ public interface ArticleRepository extends ListCrudRepository<Article, Long> {
     List<Article> findByIsAcceptedTrue();
     List<Article> findByIsAcceptedFalse();
     List<Article> findByIsAcceptedNull();
+   
+    @Query("SELECT COUNT(a) FROM Article a WHERE a.isAccepted IS NULL")
+    long countByIsAcceptedNull();
 }

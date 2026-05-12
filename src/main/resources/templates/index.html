@@ -65,8 +65,8 @@
                                 </a>
 
                                 <div th:if="${careerRequests > 0}">
-                                    <i class="fas fa-bell pt-2">
-                                        <span class="badge bg-danger"
+                                    <i class="fas fa-bell fa-1 pt-2">
+                                        <span class="badge bg-danger rounded-pill text-white px-1"
                                               th:text="${careerRequests}">
                                         </span>
                                     </i>
@@ -77,12 +77,11 @@
                         <li sec:authorize="hasRole('REVISOR')">
                             <div class="d-flex">
                                 <a class="dropdown-item" th:href="@{/revisor/dashboard}">
-                                    Dashboard del revisore
+                                    Dashboard revisore
                                 </a>
-
                                 <div th:if="${articlesToBeRevised > 0}">
-                                    <i class="fas fa-bell pt-2">
-                                        <span class="badge bg-danger"
+                                    <i class="fas fa-bell fa-1 pt-2">
+                                        <span class="badge bg-danger rounded-pill text-white px-1"
                                               th:text="${articlesToBeRevised}">
                                         </span>
                                     </i>

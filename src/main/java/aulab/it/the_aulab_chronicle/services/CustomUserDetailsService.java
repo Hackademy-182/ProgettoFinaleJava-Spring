@@ -38,11 +38,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+
+    roles.forEach(r -> System.out.println("ROLE RAW: " + r.getName()));
+
     return roles.stream()
-            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()
-                    .replace("role_", "").toUpperCase()))
+            .map(role -> new SimpleGrantedAuthority(
+                    "ROLE_" + role.getName()
+                            .replace("role_", "")
+                            .replace("ROLE_", "")
+                            .trim()
+                            .toUpperCase()
+            ))
             .collect(Collectors.toList());
-    }
+}
 
 
 }
