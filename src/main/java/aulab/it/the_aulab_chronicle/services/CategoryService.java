@@ -48,8 +48,16 @@ public class CategoryService implements CrudService<CategoryDto, Category, Long>
     }
 
     @Override
-    public CategoryDto update(Long key, Category updatedArticle, MultipartFile file) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public CategoryDto update(Long key, Category updatedCategory, MultipartFile file) {
+
+        Category category = categoryRepository.findById(key)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        category.setName(updatedCategory.getName());
+
+        Category savedCategory = categoryRepository.save(category);
+
+        return modelMapper.map(savedCategory, CategoryDto.class);
     }
 
     @Override

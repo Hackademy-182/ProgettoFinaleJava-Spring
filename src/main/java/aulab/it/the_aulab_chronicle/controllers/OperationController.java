@@ -66,6 +66,9 @@ public class OperationController {
 
         careerRequestService.save(careerRequest, user);
 
+        redirectAttributes.addFlashAttribute("successMessage", 
+                                    "Richiesta di collaborazione inviata con successo");
+
         return "redirect:/";
     }
 
