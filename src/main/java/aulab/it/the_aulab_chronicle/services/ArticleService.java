@@ -22,6 +22,7 @@ import aulab.it.the_aulab_chronicle.models.User;
 import aulab.it.the_aulab_chronicle.repositories.ArticleRepository;
 import aulab.it.the_aulab_chronicle.repositories.UserRepository;
 import aulab.it.the_aulab_chronicle.models.Category;
+import aulab.it.the_aulab_chronicle.models.Image;
 
 @Service
 public class ArticleService implements CrudService<ArticleDto, Article, Long> {
@@ -89,16 +90,67 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
         return dto;
     }
 
+   
     @Override
-    public ArticleDto update(Long id, Article model, Principal principal) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public ArticleDto update(Long key, Article updatedArticle, MultipartFile file) {
+
+        Article existingArticle = articleRepository.findById(key)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Articolo non trovato"));
+
+        updatedArticle.setId(key);
+        updatedArticle.setUser(existingArticle.getUser());
+        updatedArticle.setPublishDate(existingArticle.getPublishDate());
+        updatedArticle.setIsAccepted(null);
+
+        try {
+
+            // ======================
+            // IMMAGINE (DELEGATA)
+            // ======================
+            if (file != null && !file.isEmpty()) {
+
+                // elimina vecchia immagine da cloud (se esiste)
+                if (existingArticle.getImage() != null) {
+                    imageService.deleteImage(existingArticle.getImage().getPath());
+                }
+
+                // upload nuova immagine
+                String url = imageService.saveImageOnCloud(file).get();
+
+                // salva o aggiorna immagine nel DB (ORA È INTELLIGENTE)
+                imageService.saveImageOnDB(url, updatedArticle);
+            } else {
+                // nessun file nuovo → mantieni immagine
+                updatedArticle.setImage(existingArticle.getImage());
+            }
+
+            Article saved = articleRepository.save(updatedArticle);
+
+            return modelMapper.map(saved, ArticleDto.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Errore durante aggiornamento articolo");
+        }
     }
-
-
 
     @Override
     public void delete(Long key) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        if (articleRepository.existsById(key)) {
+            Article article = articleRepository.findById(key).get();
+
+            try {
+                String path = article.getImage().getPath();
+                article.getImage().setArticle(null);
+                imageService.deleteImage(path);
+            } catch (Exception e) {
+                 e.printStackTrace();
+            }
+            articleRepository.deleteById(key);
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     // ricerca per categoria

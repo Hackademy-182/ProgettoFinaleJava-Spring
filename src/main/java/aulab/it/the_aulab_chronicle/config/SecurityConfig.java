@@ -33,6 +33,9 @@ public class SecurityConfig {
                                 .hasRole("ADMIN")
             .requestMatchers("/revisor/dashboard", "/revisor/detail/{id}", "/accept")
                                 .hasRole("REVISOR")
+            .requestMatchers("/writer/dashboard", "/articles/create", "/articles/edit/{id}",
+                                "/articles/update/{id}", "/articles/delete/{id}")
+                                .hasRole("WRITER")                 
             .requestMatchers("/register**", "/login", "/**", "/articles", "/images/**",
                             "/articles/detail/**", "/categories/search/{id}", "/search/{id}", "/articles/search").permitAll()
             .anyRequest().authenticated())

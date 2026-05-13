@@ -1,5 +1,6 @@
 package aulab.it.the_aulab_chronicle.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -144,6 +145,22 @@ public class UserController {
         viewModel.addAttribute("articlesToBeRevised", toBeRevised.size());
 
         return "revisor/dashboard";
+    }
+
+    // Rotta per la dashboard del writer
+
+    @GetMapping("/writer/dashboard")
+    public String writerDashboard(Model viewModel, Principal principal){
+
+        viewModel.addAttribute("title", "I tuoi articoli");
+
+        List<ArticleDto> userArticles = articleService.readAll().stream()
+                        .filter(article->article.getUser().getUsername().equals(principal.getName()))
+                        .toList();
+
+        viewModel.addAttribute("articles", userArticles);
+
+        return "writer/dashboard";
     }
 
 

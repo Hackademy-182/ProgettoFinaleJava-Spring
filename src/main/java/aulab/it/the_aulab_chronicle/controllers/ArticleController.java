@@ -154,4 +154,48 @@ public class ArticleController {
         return "articles/articles";
     }
 
+    // Rotta per la modifica del proprio articolo
+
+    @GetMapping("/edit/{id}")
+    public String editArticle(@PathVariable("id") Long id, Model viewModel){
+
+        viewModel.addAttribute("title", "Modifica il tuo articolo");
+        viewModel.addAttribute("article", articleService.read(id));
+        viewModel.addAttribute("categories", categoryService.readAll());
+
+        return "articles/edit";
+    }
+
+    // Rotta post modifica articolo
+
+    @PostMapping("/update/{id}")
+    public String articleUpdate(@PathVariable("id") Long id, 
+                                @Valid @ModelAttribute("article") Article article, BindingResult result,
+                                RedirectAttributes redirectAttributes, Principal principal,
+                                MultipartFile file, Model viewModel){
+
+        if (result.hasErrors()) {
+            viewModel.addAttribute("title", "Aggiornamento dell'articolo");
+            article.setImage(articleService.read(id).getImage());
+            viewModel.addAttribute("article", article);
+            viewModel.addAttribute("categories", categoryService.readAll());
+            return "articles/edit";
+        }
+        articleService.update(id, article, file);
+        redirectAttributes.addFlashAttribute("successMessage", 
+                                                "Articolo modificato con successo");
+        return "redirect:/writer/dashboard";
+    }
+
+    // Rotta cancellazione articolo del writer
+
+    @GetMapping("/delete/{id}")
+    public String articleDelete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+
+        articleService.delete(id);
+        redirectAttributes.addFlashAttribute("successMessage", 
+                                                "Articolo cancellato con successo!");
+        return "redirect:/writer/dashboard";
+    }
+
 }

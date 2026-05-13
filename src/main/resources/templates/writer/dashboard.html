@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{index :: head}"></head>
+<body>
+
+    <nav th:insert="~{index :: navbar}"></nav>
+
+    <h1 class="text-center">La tua dashboard</h1>
+    <h2 class="text-center">I tuoi articoli</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Titolo</th>
+                            <th>Sottotitolo</th>
+                            <th>Categoria</th>
+                            <th>#Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="article:${articles}">
+                            <td th:text="${article.id}"></td>
+                            <td th:text="${article.title}"></td>
+                            <td th:text="${article.subtitle}"></td>
+                            <td th:if="${article.category}" th:text="${article.category.name}"></td>
+                            <td th:unless="${article.category}">Nessuna categoria</td>
+                            <td>
+                                <a th:href="@{/articles/detail/{id}(id=${article.id})}" class="btn btn-primary">
+                                    <i class="fa-solid fa-bars"></i>
+                                </a>
+                                <a th:href="@{/articles/edit/{id}(id=${article.id})}" class="btn btn-warning">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a th:href="@{/articles/delete/{id}(id=${article.id})}" class="btn btn-danger">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <footer th:insert="~{index :: footer}"></footer>
+
+    <script th:replace="~{index :: bootstrapScript}"></script>
+    
+</body>
+</html>

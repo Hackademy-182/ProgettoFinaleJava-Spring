@@ -52,12 +52,14 @@
                             <a class="dropdown-item" th:href="@{/login}">Accedi</a>
                         </li>
 
-                        <li sec:authorize="isAuthenticated">
+                        <li sec:authorize="hasRole('WRITER')">
                             <a class="dropdown-item" th:href="@{/articles/create}">
                                 Inserisci articolo
                             </a>
                         </li>
-
+                        <li sec:authorize="hasRole('WRITER')">
+                            <a th:href="@{/writer/dashboard}" class="dropdown-item">Dashboard writer</a>
+                        </li>
                         <li sec:authorize="hasRole('ADMIN')">
                             <div class="d-flex">
                                 <a class="dropdown-item" th:href="@{/admin/dashboard}">

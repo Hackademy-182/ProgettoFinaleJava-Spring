@@ -45,9 +45,25 @@ public class ImageServiceImpl implements ImageService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public void saveImageOnDB(String url, Article article){
+    public void saveImageOnDB(String url, Article article) {
+
         url = url.replace(supabaseBucket, supabaseImage);
-        imageRepository.save(Image.builder().path(url).article(article).build());
+
+        Image existingImage = imageRepository.findByArticle(article);
+
+        if (existingImage != null) {
+            // UPDATE
+            existingImage.setPath(url);
+            imageRepository.save(existingImage);
+        } else {
+            // INSERT
+            imageRepository.save(
+                Image.builder()
+                    .path(url)
+                    .article(article)
+                    .build()
+            );
+        }
     }
 
     @Async

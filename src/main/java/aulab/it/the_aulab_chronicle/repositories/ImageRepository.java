@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import aulab.it.the_aulab_chronicle.models.Article;
 import aulab.it.the_aulab_chronicle.models.Image;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
+
+    Image findByArticle(Article article);
 
     @Modifying
     @Query(value = "DELETE FROM images WHERE path = :path", nativeQuery = true)
