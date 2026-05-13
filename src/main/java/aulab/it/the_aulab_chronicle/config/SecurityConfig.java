@@ -34,7 +34,7 @@ public class SecurityConfig {
             .requestMatchers("/revisor/dashboard", "/revisor/detail/{id}", "/accept")
                                 .hasRole("REVISOR")
             .requestMatchers("/register**", "/login", "/**", "/articles", "/images/**",
-                            "/articles/detail/**", "/categories/search/{id}", "/search/{id}").permitAll()
+                            "/articles/detail/**", "/categories/search/{id}", "/search/{id}", "/articles/search").permitAll()
             .anyRequest().authenticated())
             .formLogin(form->form.loginPage("/login")
             .loginProcessingUrl("/login").defaultSuccessUrl("/").permitAll())

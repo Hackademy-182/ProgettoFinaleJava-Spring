@@ -10,16 +10,20 @@ import aulab.it.the_aulab_chronicle.repositories.CareerRequestRepository;
 @ControllerAdvice
 public class GlobalModelAttributes {
 
-     @Autowired
+    @Autowired
     private CareerRequestRepository careerRequestRepository;
+
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    // Funzionamento notifica admin
 
     @ModelAttribute("careerRequests")
     public Long unreadRequests() {
         return careerRequestRepository.countByIsCheckedFalse();
     }
 
-     @Autowired
-    private ArticleRepository articleRepository;
+    // Funzionamento notifica revisor
 
     @ModelAttribute("articlesToBeRevised")
     public long articlesToBeRevised() {
