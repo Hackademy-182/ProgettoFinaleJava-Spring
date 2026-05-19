@@ -6,7 +6,7 @@
     <nav th:insert="~{index :: navbar}"></nav>
     
     <h1 th:text="${article.title}" class="text-center p-2"></h1>
-    <h2 th:text="${article.subtitle}" class="text-center p-2"></h2>
+    <h2 th:text="${article.subtitle}" class="text-center pb-2"></h2>
     
     <div class="container">
         <div class="row justify-content-center">
@@ -15,7 +15,7 @@
                 <img th:unless="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="@{/images/default.png}" alt="Immagine di default" class="img-fluid">
             </div>
             <div class="col-12 col-md-6 p-2">
-                <div class="p-2">
+                <div class="px-2 pb-2">
                     <a th:href="@{/users/search/{id}(id=${article.user.id})}" class="text-decoration-none">
                         <div>
                             Autore: <span th:text="${article.user.username}"></span>
@@ -36,11 +36,11 @@
                     </p>
                 </div>
                 <div class="p-2">
-                    <p >Pubblicato il: <span th:text="${article.publishDate}"></span></p>
+                    <p class="exception">Pubblicato il: <span th:text="${article.publishDate}"></span></p>
                 </div>
             </div>
-            <div class="col-12">
-                <p th:text="${article.body}" class="p-2"></p>
+            <div class="col-12 p-2">
+                <p class="exception">Descrizione: <div th:text="${article.body}" class="exception"></div></p>
             </div>
             <div class="col-12 text-center p-2">
                 <a href="#" class="btn btn-primary" onclick="goBack()">Torna indietro agli articoli</a>

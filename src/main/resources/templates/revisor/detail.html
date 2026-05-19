@@ -35,11 +35,11 @@
                     </p>
                 </div>
                 <div class="p-2">
-                    <p th:text="${article.publishDate}">Pubblicato il: </p>
+                    <p class="exception">Pubblicato il: <span th:text="${article.publishDate}"></span></p>
                 </div>
             </div>
             <div class="col-12">
-                <p th:text="${article.body}" class="p-2"></p>
+                <p class="p-2 exception">Descrizione <div th:text="${article.body}" class="exception"></div></p>
             </div>
             <div class="d-flex justify-content-center">
                 <form th:action="@{/articles/accept}" method="post">

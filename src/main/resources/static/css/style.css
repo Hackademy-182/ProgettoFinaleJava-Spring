@@ -5,7 +5,6 @@ body{
 /* Navbar */
 
 .navbar{
-    background-color: cornflowerblue !important;
     border-bottom: 2px solid gold;
 }
 
@@ -36,14 +35,21 @@ border: 2px solid gold !important;
     color: whitesmoke;
 }
 
+.btnSearch:hover{
+    border: 2px solid gold !important;
+    background-color: whitesmoke !important;
+    color: gold !important;
+
+}
+
 /* Footer */
 
-.footer{
+footer{
     border-bottom: 2px solid gold;
 }
 
 .endFooter{
-    background-color: cornflowerblue;
+    background-color: slategray;
 }
 
 /* Titoli */
@@ -70,16 +76,6 @@ h2{
 
 .form-label{
     color: whitesmoke;
-}
-
-/* tabelle */
-
-.tableCustom th{
-    background-color: beige;
-}
-
-.tableCustom td{
-    background-color: whitesmoke;
 }
 
 /* Eccezione register e login */

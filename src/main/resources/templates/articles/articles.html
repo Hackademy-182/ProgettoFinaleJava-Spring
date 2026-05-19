@@ -13,11 +13,13 @@
                 <div class="card">
                     <img th:if="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="${article.image.path}" class="card-img-top object-fit-cover p-1" style="height: 250px;" alt="Foto dell'articolo">
                     <img th:unless="${article.image != null and article.image.path != null and !article.image.path.isEmpty()}" th:src="@{/images/default.png}" alt="Immagine di default" class="card-body object-fit-cover p-1" style="height: 250px;">
-                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                        <h5 th:text="${article.title}" class="card-title text-truncate"></h5>
-                        <p th:text="${article.subtitle}" class="card-text text-truncate"></p>
-                        <p th:text="${article.user.username}"></p>
-                        <a th:href="@{/articles/detail/{id}(id=${article.id})}" class="btn btn-primary">Leggi articolo</a>
+                    <div class="card-body">
+                        <h5 th:text="${article.title}" class="card-title text-center text-truncate w-100"></h5>
+                        <p th:text="${article.subtitle}" class="card-text text-center text-truncate w-100"></p>
+                        <p th:text="${article.user.username}" class="card-text text-center text-truncate w-100"></p>
+                        <div class="text-center">
+                            <a th:href="@{/articles/detail/{id}(id=${article.id})}" class="btn btn-primary">Leggi articolo</a>
+                        </div>
                     </div>
                 </div>
             </div>
