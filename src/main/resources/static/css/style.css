@@ -1,0 +1,107 @@
+body{
+    background-color: cornflowerblue;
+}
+
+/* Navbar */
+
+.navbar{
+    background-color: cornflowerblue !important;
+    border-bottom: 2px solid gold;
+}
+
+a{
+    font-size: larger !important;
+    font-weight: 400 !important;
+    color: whitesmoke !important;
+}
+
+.dropdown-menu{
+    background-color: cornflowerblue;
+}
+
+.dropdown-item:hover{
+    background-color: darkturquoise !important;
+}
+
+.benvenuto{
+    color: whitesmoke;
+}
+
+input{
+border: 2px solid gold !important;
+}
+
+.btnSearch{
+    border: 2px solid gold;
+    color: whitesmoke;
+}
+
+/* Footer */
+
+.footer{
+    border-bottom: 2px solid gold;
+}
+
+.endFooter{
+    background-color: cornflowerblue;
+}
+
+/* Titoli */
+
+h1{
+    color: whitesmoke;
+    padding: 10px;
+}
+
+/* Sottotitoli */
+
+h2{
+    color: whitesmoke;
+    padding-bottom: 5px;
+} 
+
+/* Ultimi articoli home */
+
+.container{
+    border-bottom: 2px solid gold;
+}
+
+/* Label di tutti i form */
+
+.form-label{
+    color: whitesmoke;
+}
+
+/* tabelle */
+
+.tableCustom th{
+    background-color: beige;
+}
+
+.tableCustom td{
+    background-color: whitesmoke;
+}
+
+/* Eccezione register e login */
+
+.exception{
+    color: whitesmoke;
+}
+
+a.linkRegister {
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
+a.linkRegister:hover {
+    color: gold !important;
+}
+
+a.linkLogin{
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
+a.linkLogin:hover{
+    color: gold !important;
+}

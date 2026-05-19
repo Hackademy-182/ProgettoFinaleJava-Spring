@@ -9,6 +9,8 @@
     <title th:text="${title}">Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
           rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -32,12 +34,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/articles">I nostri articoli</a>
+                    <a class="nav-link active" href="/articles">I nostri articoli</a>
                 </li>
 
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                    <a class="nav-link dropdown-toggle active" href="#" role="button"
                        data-bs-toggle="dropdown">
                         Area personale
                     </a>
@@ -100,7 +102,7 @@
                     </ul>
                 </li>
 
-                <li sec:authorize="isAuthenticated" class="d-flex align-items-center">
+                <li sec:authorize="isAuthenticated" class="d-flex align-items-center benvenuto">
                     Benvenuto <span class="px-2" sec:authentication="name"></span>
                 </li>
 
@@ -108,7 +110,7 @@
 
             <form method="get" th:action="@{/articles/search}" class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" name="keyword">
-                <button class="btn btn-outline-success">Search</button>
+                <button class="btn btnSearch">Search</button>
             </form>
 
         </div>
@@ -117,9 +119,8 @@
 
 <!-- FOOTER invariato -->
 <footer th:fragment="footer" class="bg-dark text-white pt-4">
-    <div class="container">
+    <div class="container footer">
         <div class="row justify-content-between">
-
             <div class="col-md-4 mb-3">
                 <a href="/">Home</a>
             </div>
@@ -134,7 +135,7 @@
         </div>
     </div>
 
-    <div class="bg-secondary text-center py-2">
+    <div class="endFooter text-center py-2">
         <p class="mb-0">All rights reserved.</p>
     </div>
 </footer>
